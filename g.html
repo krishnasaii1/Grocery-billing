@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery Billing</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <style>
+    /* Add custom styles here if needed */
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Grocery Billing</h2>
+  <div class="form-group">
+    <label for="item">Item:</label>
+    <input type="text" class="form-control" id="item">
+  </div>
+  <div class="form-group">
+    <label for="price">Price:</label>
+    <input type="number" class="form-control" id="price">
+  </div>
+  <div class="form-group">
+    <label for="quantity">Quantity:</label>
+    <input type="number" class="form-control" id="quantity">
+  </div>
+  <button class="btn btn-primary" onclick="addItem()">Add Item</button>
+  <hr>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="billItems">
+      <!-- Bill items will be added dynamically here -->
+    </tbody>
+  </table>
+  <div id="total"></div>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Custom JavaScript -->
+<script>
+  let items = [];
+
+  function addItem() {
+    const item = document.getElementById('item').value;
+    const price = parseFloat(document.getElementById('price').value);
+    const quantity = parseInt(document.getElementById('quantity').value);
+
+    if (item && price && quantity) {
+      const total = price * quantity;
+      items.push({ item, price, quantity, total });
+      updateBill();
+      clearFields();
+    } else {
+      alert('Please fill all fields!');
+    }
+  }
+
+  function updateBill() {
+    const billItems = document.getElementById('billItems');
+    billItems.innerHTML = '';
+    let totalAmount = 0;
+
+    items.forEach((item, index) => {
+      totalAmount += item.total;
+      const row = `<tr>
+                    <td>${item.item}</td>
+                    <td>${item.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.total}</td>
+                  </tr>`;
+      billItems.innerHTML += row;
+    });
+
+    const totalDiv = document.getElementById('total');
+    totalDiv.innerHTML = `<h4>Total Amount: $${totalAmount}</h4>`;
+  }
+
+  function clearFields() {
+    document.getElementById('item').value = '';
+    document.getElementById('price').value = '';
+    document.getElementById('quantity').value = '';
+  }
+</script>
+</body>
+</html>
